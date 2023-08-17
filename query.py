@@ -17,6 +17,18 @@ def main():
     try:
         open(".lock","r")
     except Exception as e:
+        # drop
+        path = pathlib.Path.cwd().joinpath("sql/DDL/views")
+        with open(path.joinpath("drop.sql")) as fd:
+            if sql := fd.read():
+                cursor.execute(sql)
+        conection.commit()
+        path = pathlib.Path.cwd().joinpath("sql/DDL/tables")
+        with open(path.joinpath("drop.sql")) as fd:
+            if sql := fd.read():
+                cursor.execute(sql)
+        conection.commit()
+        # create
         for path in pathlib.Path.cwd().joinpath("sql/DDL").iterdir():
             with open(path.joinpath("create.sql")) as fd:
                 if sql := fd.read():
@@ -27,6 +39,7 @@ def main():
         conection.commit()
         open(".lock","w")
 
+    print()
     for path in pathlib.Path.cwd().joinpath("sql/DML").iterdir():
         with open(path,"r") as fd:
             if sql := fd.read():
@@ -37,7 +50,8 @@ def main():
                 # Some parts of this code(below the comment) was writen with helps of CPT-3.5.
                 # headers=[i[0] for i in cursor.description]
                 print(path.name + " " + comment)
-                print(tabulate.tabulate(rows, headers=[i[0] for i in cursor.description]))
+                print(tabulate.tabulate(rows, headers=[i[0] for i in cursor.description], tablefmt="grid"))
+                print("\n\n")
     pass
 
 if __name__ == "__main__":
