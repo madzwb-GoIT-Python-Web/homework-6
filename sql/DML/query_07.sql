@@ -1,18 +1,18 @@
---  Returns grades of group by subject.
+--  Returns scores of group by course.
 SELECT
     groups.name,
     students.first_name,
     students.last_name,
-    subjects.name,
-    dashboard.grade,
-    dashboard.datetime
-FROM dashboard
-INNER JOIN subjects
-ON subjects.id = dashboard.subject_id
+    courses.name,
+    scores.score,
+    scores.datetime
+FROM scores
+INNER JOIN courses
+ON courses.id = scores.course_id
 INNER JOIN students
-ON students.id = dashboard.student_id
+ON students.id = scores.student_id
 INNER JOIN groups
 ON students.group_id = groups.id
-WHERE subjects.id = 0 AND groups.id = 0
+WHERE courses.id = 0 AND groups.id = 0
 -- ORDER BY groups.id, students.id
 ;

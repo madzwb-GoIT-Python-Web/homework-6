@@ -6,15 +6,15 @@ SELECT
     students.id AS student_id,
     students.first_name AS student_first_name,
     students.last_name AS student_last_name,
-    ROUND(AVG(dashboard.grade), 2),
+    ROUND(AVG(scores.score), 2),
     COUNT(*)
-FROM dashboard
-INNER JOIN subjects
-ON subjects.id = dashboard.subject_id
+FROM scores
+INNER JOIN courses
+ON courses.id = scores.course_id
 INNER JOIN teachers
-ON teachers.id = subjects.teacher_id
+ON teachers.id = courses.teacher_id
 INNER JOIN students
-ON students.id = dashboard.student_id
+ON students.id = scores.student_id
 WHERE teachers.id = 0 AND students.id = 0
 GROUP BY 
     teachers.id,

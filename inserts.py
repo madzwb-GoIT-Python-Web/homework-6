@@ -39,20 +39,20 @@ def teachers(faker, number):
         datas.append(teacher)
     return datas, sql#, list_datas
 
-def subjects(faker, subjects, teachers):
+def courses(faker, courses, teachers):
     datas = []
-    sql = f"INSERT INTO subjects(id, name, teacher_id) VALUES ({X}, {X}, {X})"
-    for id, name in enumerate(subjects):
-        subject = (id,name, random.choice(teachers)[0])
-        datas.append(subject)
+    sql = f"INSERT INTO courses(id, name, teacher_id) VALUES ({X}, {X}, {X})"
+    for id, name in enumerate(courses):
+        course = (id, name, random.choice(teachers)[0])
+        datas.append(course)
     return datas, sql
 
-def dashboard(faker, max_grades, subjects, students):
+def scores(faker, max_scores, courses, students):
     datas = []
-    sql = f"INSERT INTO dashboard(id, subject_id, student_id, datetime, grade) VALUES ({X}, {X}, {X}, {X}, {X})"
+    sql = f"INSERT INTO scores(id, course_id, student_id, datetime, score) VALUES ({X}, {X}, {X}, {X}, {X})"
     _calendar = calendar.Calendar(calendar.MONDAY)
     id = 0
-    for _ in range(0, max_grades):
+    for _ in range(0, max_scores):
         for student in students:
             year    = 2023
             month   = random.randint(1,12)
@@ -61,7 +61,7 @@ def dashboard(faker, max_grades, subjects, students):
                 if date.month == month and date.weekday() < 5:
                     days.append(date.day)
             # days = calendar.monthrange(year, month)[1]
-            subject = random.choices(subjects)
+            course = random.choices(courses)
             timestamp = datetime.datetime(
                             year,
                             month,
@@ -70,7 +70,7 @@ def dashboard(faker, max_grades, subjects, students):
                             random.randint(1, 59),
                             random.randint(1, 59)
                         )
-            rate = (id, random.choices(subjects)[0][0], student[0], timestamp.isoformat(), random.randint(1, 12))
+            rate = (id, random.choices(courses)[0][0], student[0], timestamp.isoformat(), random.randint(1, 12))
             datas.append(rate)
             id += 1
     return datas, sql
@@ -78,11 +78,11 @@ def dashboard(faker, max_grades, subjects, students):
 def fill_db(cursor):
     max_students    = 50
     max_teachers    = 5
-    max_subjects    = 8
-    max_grades      = 20
+    max_courses    = 8
+    max_scores      = 20
 
     _groups = ["A", "B", "C"]
-    _subjects = [
+    _courses = [
         "Introduction to Computer Science",
         "Data Structures and Algorithms",
         "Computer Systems Engineering",
@@ -108,11 +108,11 @@ def fill_db(cursor):
     groups_datas    , groups_sql    = groups    (_faker, _groups)
     students_datas  , students_sql  = students  (_faker, max_students, groups_datas)
     teachers_datas  , teachers_sql  = teachers  (_faker, max_teachers)
-    subjects_datas  , subjects_sql  = subjects  (_faker, _subjects, teachers_datas)
-    dashboard_datas , dashboard_sql = dashboard (_faker, max_grades, subjects_datas, students_datas)
+    courses_datas  , courses_sql  = courses  (_faker, _courses, teachers_datas)
+    scores_datas , scores_sql = scores (_faker, max_scores, courses_datas, students_datas)
     cursor.executemany(groups_sql   , groups_datas)
     cursor.executemany(students_sql , students_datas)
     cursor.executemany(teachers_sql , teachers_datas)
-    cursor.executemany(subjects_sql , subjects_datas)
-    cursor.executemany(dashboard_sql, dashboard_datas)
+    cursor.executemany(courses_sql , courses_datas)
+    cursor.executemany(scores_sql, scores_datas)
     

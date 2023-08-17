@@ -1,12 +1,12 @@
---  Returns subjects taught by the teacher.
+--  Returns courses taught by the teacher.
 SELECT
     teachers.id,
     teachers.first_name,
     teachers.last_name,
-    subjects.name
+    courses.name
 FROM teachers
-INNER JOIN subjects
-ON subjects.teacher_id = teachers.id
+INNER JOIN courses
+ON courses.teacher_id = teachers.id
 WHERE teachers.id = 0
 -- ORDER BY teachers.id
 ;

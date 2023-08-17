@@ -1,17 +1,17 @@
---  Returns average grade given by teacher for his subjects.
+--  Returns average score given by teacher for his courses.
 SELECT
     teachers.id,
     teachers.first_name,
     teachers.last_name,
-    subjects.id AS subject_id,
-    subjects.name,
-    ROUND(AVG(dashboard.grade), 2)
-FROM dashboard
-INNER JOIN subjects
-ON subjects.id = dashboard.subject_id
+    courses.id AS course_id,
+    courses.name,
+    ROUND(AVG(scores.score), 2)
+FROM scores
+INNER JOIN courses
+ON courses.id = scores.course_id
 INNER JOIN teachers
-ON teachers.id = subjects.teacher_id
+ON teachers.id = courses.teacher_id
 WHERE teachers.id = 0
-GROUP BY teachers.id, subjects.id
-ORDER BY teachers.id, subjects.id
+GROUP BY teachers.id, courses.id
+ORDER BY teachers.id, courses.id
 ;

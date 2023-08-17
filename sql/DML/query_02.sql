@@ -1,56 +1,56 @@
---  Returns first student with highest average grade by subject
+--  Returns first student with highest average score by course
 SELECT
-    subjects.name,
+    courses.name,
     students.id,
     students.first_name,
     students.last_name,
-    ROUND(AVG(dashboard.grade), 2) as grade
+    ROUND(AVG(scores.score), 2) as score
 FROM students
-INNER JOIN dashboard ON students.id = dashboard.student_id
-INNER JOIN subjects  ON subjects.id = dashboard.subject_id
-WHERE dashboard.subject_id = 0
-GROUP BY students.id, subjects.name
-ORDER BY grade DESC
+INNER JOIN scores ON students.id = scores.student_id
+INNER JOIN courses  ON courses.id = scores.course_id
+WHERE scores.course_id = 0
+GROUP BY students.id, courses.name
+ORDER BY score DESC
 LIMIT 1
 ;
 
---  Returns all students with highest average grade by subject
+--  Returns all students with highest average score by course
 
-DROP VIEW IF EXISTS students_averages_grades_by_subjects;
+DROP VIEW IF EXISTS students_averages_scores_by_courses;
 
-CREATE VIEW students_averages_grades_by_subjects AS
+CREATE VIEW students_averages_scores_by_courses AS
 SELECT
-    subjects.id     AS subject_id,
-    subjects.name   AS subject_name,
+    courses.id     AS course_id,
+    courses.name   AS course_name,
     students.id     AS student_id,
     students.first_name,
     students.last_name,
-    AVG(dashboard.grade) OVER(PARTITION BY subject_id, student_id) as average_grade,
-    -- AVG(dashboard.grade) OVER(PARTITION BY subject_id) as by_subject_agverage_grade,
-    COUNT(*) OVER(PARTITION BY subjects.id, students.id) as grades
-FROM dashboard
-INNER JOIN students ON dashboard.student_id = students.id
-INNER JOIN subjects ON dashboard.subject_id = subjects.id
-ORDER BY subject_id, average_grade DESC
+    AVG(scores.score) OVER(PARTITION BY course_id, student_id) as average_score,
+    -- AVG(scores.score) OVER(PARTITION BY course_id) as by_course_agverage_score,
+    COUNT(*) OVER(PARTITION BY courses.id, students.id) as scores
+FROM scores
+INNER JOIN students ON scores.student_id = students.id
+INNER JOIN courses ON scores.course_id = courses.id
+ORDER BY course_id, average_score DESC
 ;
 
 SELECT
-    students_grades.subject_name,
-    students_grades.first_name,
-    students_grades.last_name,
-    ROUND(maximums.maximum_grade, 2)
-FROM students_averages_grades_by_subjects AS students_grades
+    students_scores.course_name,
+    students_scores.first_name,
+    students_scores.last_name,
+    ROUND(maximums.maximum_score, 2)
+FROM students_averages_scores_by_courses AS students_scores
 INNER JOIN
 (
     SELECT
-        subject_id,
-        subject_name,
-        MAX(average_grade) as maximum_grade
-    FROM students_averages_grades_by_subjects
-    GROUP BY subject_id, subject_name
-    ORDER BY subject_id
+        course_id,
+        course_name,
+        MAX(average_score) as maximum_score
+    FROM students_averages_scores_by_courses
+    GROUP BY course_id, course_name
+    ORDER BY course_id
 ) as maximums
-ON  maximums.subject_id     = students_grades.subject_id
-AND maximums.maximum_grade  = students_grades.average_grade
-WHERE students_grades.subject_id = 0
+ON  maximums.course_id     = students_scores.course_id
+AND maximums.maximum_score  = students_scores.average_score
+WHERE students_scores.course_id = 0
 ;

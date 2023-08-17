@@ -1,4 +1,4 @@
---  Returns average grade.
-SELECT ROUND(AVG(grade), 2)
-FROM dashboard
+--  Returns average score.
+SELECT ROUND(AVG(score), 2)
+FROM scores
 ;

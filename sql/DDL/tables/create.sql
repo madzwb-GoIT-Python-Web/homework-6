@@ -21,7 +21,7 @@ CREATE TABLE teachers(
     -- middle_name VARCHAR(128)
 );
 
-CREATE TABLE subjects(
+CREATE TABLE courses(
     id INT PRIMARY KEY,
     name VARCHAR(128) NOT NULL,
     teacher_id INT NOT NULL,
@@ -30,13 +30,13 @@ CREATE TABLE subjects(
         ON UPDATE CASCADE
 );
 
-CREATE TABLE dashboard(
+CREATE TABLE scores(
     id INT PRIMARY KEY,
-    subject_id INT NOT NULL,
+    course_id INT NOT NULL,
     student_id INT NOT NULL,
     datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    grade INT NOT NULL,
-    FOREIGN KEY (subject_id) REFERENCES subjects (id)
+    score INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses (id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     FOREIGN KEY (student_id) REFERENCES students (id)
