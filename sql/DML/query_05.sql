@@ -1,3 +1,4 @@
+--  Returns subjects taught by the teacher.
 SELECT
     teachers.id,
     teachers.first_name,

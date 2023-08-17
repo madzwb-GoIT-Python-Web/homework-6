@@ -1,3 +1,4 @@
+--  Returns grades of group by subject.
 SELECT
     groups.name,
     students.first_name,

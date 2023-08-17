@@ -1,3 +1,4 @@
+--  Returns students in the group.
 SELECT
     groups.name,
     students.first_name,

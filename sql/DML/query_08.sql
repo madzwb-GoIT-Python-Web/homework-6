@@ -1,3 +1,4 @@
+--  Returns average grade given by teacher for his subjects.
 SELECT
     teachers.id,
     teachers.first_name,

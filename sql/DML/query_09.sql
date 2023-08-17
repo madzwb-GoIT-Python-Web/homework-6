@@ -1,3 +1,4 @@
+--  Returns courses attended by the student.
 SELECT
     students.id,
     students.first_name,

@@ -1,3 +1,4 @@
+--  Returns last lesson's grades for specific subject in specific group.
 DROP VIEW IF EXISTS last_lessons_dates_by_groups;
 
 CREATE VIEW last_lessons_dates_by_groups AS

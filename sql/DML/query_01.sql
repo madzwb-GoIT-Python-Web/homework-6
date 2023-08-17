@@ -1,3 +1,4 @@
+--  Returns first five studens with highest average grade.
 SELECT
     students.id,
     students.first_name,

@@ -1,3 +1,4 @@
+--  Returns average score given by a particular teacher to a particular student.
 SELECT
     teachers.id AS teacher_id,
     teachers.first_name AS teacher_first_name,

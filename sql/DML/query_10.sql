@@ -1,3 +1,4 @@
+--  Returns courses that teacher reads to student.
 SELECT
     students.id,
     students.first_name,
