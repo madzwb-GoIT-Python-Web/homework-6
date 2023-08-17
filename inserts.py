@@ -142,13 +142,6 @@ def main():
             # Some parts of this code(below the comment) was writen with helps of CPT-3.5.
             # headers=[i[0] for i in cursor.description]
             print(tabulate.tabulate(rows, headers=[i[0] for i in cursor.description]))
-            # for row in rows:
-            #     tabulate.tabulate(row)
-                # line = ""
-                # for index, item in enumerate(row):
-                #     line += cursor.description[index].name + "\t: " + str(item) + "\t, "
-                # print(line)
-            # continue
     pass
 
 if __name__ == "__main__":
